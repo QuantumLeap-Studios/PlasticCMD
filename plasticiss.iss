@@ -23,18 +23,37 @@ ChangesEnvironment=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only).
 ;PrivilegesRequired=lowest
 OutputBaseFilename=PlasticSetup
-SetupIconFile=C:\Program Files (x86)\Inno Setup 6\SetupClassicIcon.ico
+SetupIconFile=C:\Users\harlo\source\repos\PlasticCMD\icon.ico
 SolidCompression=yes
 WizardStyle=modern
 
+[Files]
+Source: "C:\Users\harlo\source\repos\PlasticCMD\icon.ico"; DestDir: "{app}"
+
 [Registry]
+; Associate .pl files with Plastic file type
+Root: HKCR; Subkey: ".pl"; ValueType: string; ValueName: ""; ValueData: "PlasticFile"; Flags: uninsdeletevalue
+
+; Associate .plastic files with Plastic file type
+Root: HKCR; Subkey: ".plastic"; ValueType: string; ValueName: ""; ValueData: "PlasticFile"; Flags: uninsdeletevalue
+
+; Define PlasticFile file type details
+Root: HKCR; Subkey: "PlasticFile"; ValueType: string; ValueName: ""; ValueData: "Plastic File"; Flags: uninsdeletekey
+
+; Set the default icon for PlasticFile type
+Root: HKCR; Subkey: "PlasticFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icon.ico,0"
+
+
+; Add path to PATH variable
 Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; \
 ValueType: expandsz; ValueName: "Path"; \
 ValueData: "{olddata};{app}"; Check: NeedsAddPath('{app}')
 
-
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
+
+[Icons]
+Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 
 [Files]
 Source: "C:\Users\harlo\source\repos\PlasticCMD\bin\Debug\net9.0\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
