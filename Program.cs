@@ -1,6 +1,7 @@
 ﻿using System;
 using Plastic;
 using static Plastic.EngineFeatures;
+using Environment = System.Environment;
 
 class Program
 {
@@ -155,8 +156,8 @@ class Program
     }
     public static string GetPluginPath()
     {
-        string exeDir = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule!.FileName)!;
-        string pluginPath = Path.Combine(exeDir, "Plugins");
+        string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        string pluginPath = Path.Combine(appData, "Plastic", "Plugins");
         Directory.CreateDirectory(pluginPath);
         return pluginPath;
     }
