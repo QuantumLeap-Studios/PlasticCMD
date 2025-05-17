@@ -1,5 +1,6 @@
 ﻿using System;
 using Plastic;
+using static Plastic.EngineFeatures;
 
 class Program
 {
@@ -22,9 +23,6 @@ class Program
             }
 
             string input = args[1];
-
-            // this is going to be optional
-            // if not provided, it will default to false
 
             bool respondWithReturn = false;
             if (args.Length > 2)
@@ -116,6 +114,18 @@ class Program
             Console.WriteLine($"Unknown command: {command}");
         }
     }
+    public static void RunWithUpdateLoop(string code, bool debugReturn = false)
+    {
+        bool shouldExit = false;
+
+        InterpretResult result = Interpret(code, debugReturn);
+
+        while (!shouldExit)
+        {
+            System.Threading.Thread.Sleep(16);
+            shouldExit = EngineFeatures.ShouldLeave(result.PlasticEngine);
+        }
+    }
     public static void UploadAsset(string filePath)
     {
         using (var client = new System.Net.Http.HttpClient())
@@ -139,9 +149,9 @@ class Program
             Console.WriteLine("Response: " + response.Content.ReadAsStringAsync().Result);
         }
     }
-    public static void Interpret(string code, bool debugReturn = false)
+    public static InterpretResult Interpret(string code, bool debugReturn = false)
     {
-        EngineFeatures.Interpret(code, debugReturn);
+        return EngineFeatures.Interpret(code, debugReturn);
     }
     public static string GetPluginPath()
     {

@@ -4,7 +4,7 @@
 #define MyAppName "Plastic"
 #define MyAppVersion "0.0.1"
 #define MyAppPublisher "QuantumLeap Studios"
-#define MyAppURL "https://quantumleapstudios.org/"
+#define MyAppURL "https://quantumleapstudios.org/plastic"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -25,7 +25,7 @@ ChangesEnvironment=yes
 OutputBaseFilename=PlasticSetup
 SetupIconFile=C:\Users\harlo\source\repos\PlasticCMD\icon.ico
 SolidCompression=yes
-WizardStyle=modern
+WizardStyle=classic
 
 [Files]
 Source: "C:\Users\harlo\source\repos\PlasticCMD\icon.ico"; DestDir: "{app}"
@@ -47,7 +47,7 @@ Root: HKCR; Subkey: "PlasticFile\DefaultIcon"; ValueType: string; ValueName: "";
 ; Add path to PATH variable
 Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; \
 ValueType: expandsz; ValueName: "Path"; \
-ValueData: "{olddata};{app}"; Check: NeedsAddPath('{app}')
+ValueData: "{olddata};{app}"; Check: NeedsAddPath
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -63,9 +63,9 @@ Source: "C:\Users\harlo\source\repos\PlasticCMD\bin\Debug\net9.0\*"; DestDir: "{
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 
 [Code]
-function NeedsAddPath(Param: string): Boolean;
+function NeedsAddPath: Boolean;
 var
-  OrigPath: string;
+  OrigPath, NewPath: string;
 begin
   if not RegQueryStringValue(HKEY_LOCAL_MACHINE,
     'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',
@@ -74,7 +74,8 @@ begin
     Result := True;
     exit;
   end;
-  // Check if the path is already in the PATH variable
-  Result := Pos(';' + Param + ';', ';' + OrigPath + ';') = 0;
+  NewPath := ExpandConstant('{app}');
+  // Normalize paths with semicolons for accurate checking
+  Result := Pos(';' + NewPath + ';', ';' + OrigPath + ';') = 0;
 end;
 
