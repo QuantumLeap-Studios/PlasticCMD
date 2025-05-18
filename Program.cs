@@ -2,11 +2,18 @@
 using Plastic;
 using static Plastic.EngineFeatures;
 using Environment = System.Environment;
+using System.Security.Principal;
 
 class Program
 {
     static void Main(string[] args)
     {
+        if(!IsRunningAsAdmin())
+        {
+            Console.WriteLine("[!] PlasticCMD may crash if run without admin privileges on systems with Core Isolation (Memory Integrity) enabled.\r\n    → Please run from an Administrator Command Prompt.\r\n");
+            return;
+        }
+
         if (args.Length == 0)
         {
             Console.WriteLine("Usage: PlasticCMD run <code-or-path>");
@@ -115,6 +122,53 @@ class Program
             Console.WriteLine($"Unknown command: {command}");
         }
     }
+    static bool IsRunningAsAdmin()
+    {
+        if (OperatingSystem.IsWindows())
+        {
+            var identity = WindowsIdentity.GetCurrent();
+            var principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+        else if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
+        {
+            // No idea if this works, but hey. Its cool.
+            return System.Environment.UserName == "root" || GetEuid() == 0;
+        }
+        else
+        {
+            throw new PlatformNotSupportedException("This platform is not supported.");
+        }
+    }
+
+    static int GetEuid()
+    {
+        if (OperatingSystem.IsWindows())
+            return -1;
+        try
+        {
+            return (int)typeof(System.Environment)
+                .Assembly
+                .GetType("System.Environment+Unix")
+                ?.GetMethod("GetEuid", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
+                ?.Invoke(null, null);
+        }
+        catch
+        {
+            try
+            {
+                return getuid();
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+    }
+
+    [System.Runtime.InteropServices.DllImport("libc")]
+    static extern int getuid();
+
     public static void RunWithUpdateLoop(string code, bool debugReturn = false)
     {
         bool shouldExit = false;

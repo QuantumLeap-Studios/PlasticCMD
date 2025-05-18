@@ -2,14 +2,25 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+	
+	<PropertyGroup>
+		<DisableStackProtection>true</DisableStackProtection>
+		<NuGetAuditLevel>critical</NuGetAuditLevel>
+		<ApplicationIcon>icon.ico</ApplicationIcon>
+		<NuGetAuditMode>direct</NuGetAuditMode>
+	</PropertyGroup>
+	
+	<ItemGroup>
+	  <Content Include="icon.ico" />
+	</ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
     <Reference Include="Plastic">
-      <HintPath>..\Plastic\bin\Debug\net9.0\Plastic.dll</HintPath>
+      <HintPath>..\Plastic\bin\Debug\net8.0\Plastic.dll</HintPath>
     </Reference>
   </ItemGroup>
 
