@@ -132,13 +132,10 @@ class Program
         }
         else if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
         {
-            // No idea if this works, but hey. Its cool.
-            return System.Environment.UserName == "root" || GetEuid() == 0;
+            return getuid() == 0;
         }
-        else
-        {
-            throw new PlatformNotSupportedException("This platform is not supported.");
-        }
+
+        throw new PlatformNotSupportedException("Unsupported OS.");
     }
 
     static int GetEuid()
@@ -210,8 +207,18 @@ class Program
     }
     public static string GetPluginPath()
     {
-        string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        string pluginPath = Path.Combine(appData, "Plastic", "Plugins");
+        string basePath;
+
+        if (OperatingSystem.IsWindows())
+        {
+            basePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        }
+        else
+        {
+            basePath = Environment.GetEnvironmentVariable("XDG_CONFIG_HOME") ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config");
+        }
+
+        string pluginPath = Path.Combine(basePath, "Plastic", "Plugins");
         Directory.CreateDirectory(pluginPath);
         return pluginPath;
     }
