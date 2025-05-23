@@ -6,6 +6,8 @@ using System.Security.Principal;
 
 class Program
 {
+    public static Version Version { get; } = new Version(3, 3, 0);
+
     static void Main(string[] args)
     {
         if(!IsRunningAsAdmin())
@@ -116,6 +118,26 @@ class Program
             {
                 Console.WriteLine($"Failed to upload plugin: {ex.Message}");
             }
+        }
+        else if (command == "version")
+        {
+            Console.WriteLine($"PlasticCMD Version: {Version}");
+        }
+        else if (command == "euid")
+        {
+            int euid = GetEuid();
+            Console.WriteLine($"Effective UID: {euid}");
+        }
+        else if (command == "help")
+        {
+            Console.WriteLine("Available commands:");
+            Console.WriteLine("  run <code-or-path> - Run a code snippet or file.");
+            Console.WriteLine("  pluginpath - Get the path to the plugin directory.");
+            Console.WriteLine("  install <plugin-name> - Install a plugin.");
+            Console.WriteLine("  upload <file-path> - Upload a plugin file.");
+            Console.WriteLine("  version - Show the version of PlasticCMD.");
+            Console.WriteLine("  euid - Show the effective UID.");
+            Console.WriteLine("  help - Show this help message.");
         }
         else
         {
