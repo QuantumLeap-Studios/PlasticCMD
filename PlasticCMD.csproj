@@ -17,11 +17,11 @@
 	<ItemGroup>
 	  <Content Include="icon.ico" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
-    <Reference Include="Plastic">
-      <HintPath>..\Plastic\bin\Debug\net8.0\Plastic.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	  <Reference Include="Plastic">
+	    <HintPath>..\Plastic\bin\Debug\net8.0\Plastic.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
 
 </Project>
