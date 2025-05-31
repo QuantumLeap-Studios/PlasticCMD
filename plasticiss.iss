@@ -38,7 +38,7 @@ Root: HKCR; Subkey: ".pl"; ValueType: string; ValueName: ""; ValueData: "Plastic
 Root: HKCR; Subkey: ".plastic"; ValueType: string; ValueName: ""; ValueData: "PlasticFile"; Flags: uninsdeletevalue
 
 ; Define PlasticFile file type details
-Root: HKCR; Subkey: "PlasticFile"; ValueType: string; ValueName: ""; ValueData: "Plastic File"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "PlasticFile"; ValueType: string; ValueName: ""; ValueData: "Plastic"; Flags: uninsdeletekey
 
 ; Set the default icon for PlasticFile type
 Root: HKCR; Subkey: "PlasticFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icon.ico,0"
@@ -56,7 +56,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 
 [Files]
-Source: "C:\Users\harlo\source\repos\PlasticCMD\bin\Release\net8.0\win-x64\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\harlo\source\repos\PlasticCMD\bin\Release\net8.0\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

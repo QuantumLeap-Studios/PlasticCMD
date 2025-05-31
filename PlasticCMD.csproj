@@ -5,6 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  
   </PropertyGroup>
 	
 	<PropertyGroup>
@@ -19,9 +20,23 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+	  <Reference Include="mscorlib">
+	    <HintPath>..\..\..\Downloads\mscorlib_x86\mscorlib.dll</HintPath>
+	  </Reference>
 	  <Reference Include="Plastic">
 	    <HintPath>..\Plastic\bin\Debug\net8.0\Plastic.dll</HintPath>
 	  </Reference>
 	</ItemGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.8" />
+		<PackageReference Include="Spectre.Console" Version="0.50.1-preview.0.8" />
+		<PackageReference Include="System.Reflection.MetadataLoadContext" Version="8.0.0" />
+	</ItemGroup>
+	
+	<Target Name="KillPlasticCMD" BeforeTargets="Build">
+		<Exec Command="taskkill /F /IM PlasticCMD.exe" ContinueOnError="true" />
+	</Target>
 
 </Project>
